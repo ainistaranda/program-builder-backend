@@ -2,9 +2,9 @@ import functions from "firebase-functions"
 import express from "express"
 import cors from "cors"
 import dotenv from 'dotenv/config'
-import { getAllPrograms, addNewProgram } from "./src/programs.js"
+import { getAllPrograms, addNewProgram, getOneProgram } from "./src/programs.js"
 import { getAllExercises, addNewExercise } from "./src/exercises.js"
-import { getAllUsers, addNewUser } from "./src/users.js"
+import { getAllUsers, addNewUser, updateUser, getOneUser } from "./src/users.js"
 
 const app = express()
 app.use(cors())
@@ -15,7 +15,8 @@ app.get('/test', (req,res) => {
   res.send('hi')
 })
 
-app.get('/programs', getAllPrograms)
+app.get('/program', getAllPrograms)
+app.get('/program/:programId', getOneProgram)
 app.post('/program', addNewProgram)
 
 app.get('/exercises', getAllExercises)
@@ -23,6 +24,8 @@ app.post('/exercises', addNewExercise)
 
 app.get('/users', getAllUsers)
 app.post('/users', addNewUser)
+app.get('/users/:userId', getOneUser)
+app.patch('/users/:userId', updateUser)
 
 export const api = functions.https.onRequest(app)
 

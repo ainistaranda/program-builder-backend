@@ -24,7 +24,7 @@ export async function getOneProgram(req, res) {
   const db = dbConnect();
   const { programId } = req.params;
   const collection = await db
-    .collection("programs")
+    .collection("program")
     .find({ _id: new ObjectId(programId) })
     .toArray();
   res.send(collection);
