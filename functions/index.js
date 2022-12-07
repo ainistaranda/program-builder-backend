@@ -4,7 +4,7 @@ import cors from "cors"
 import dotenv from 'dotenv/config'
 import { getAllPrograms, addNewProgram, getOneProgram } from "./src/programs.js"
 import { getAllExercises, addNewExercise } from "./src/exercises.js"
-import { getAllUsers, addNewUser, updateUser, getOneUser } from "./src/users.js"
+import { getAllUsers, addNewUser, updateUser, getOneUser, userLogin } from "./src/users.js"
 
 const app = express()
 app.use(cors())
@@ -26,6 +26,8 @@ app.get('/users', getAllUsers)
 app.post('/users', addNewUser)
 app.get('/users/:userId', getOneUser)
 app.patch('/users/:userId', updateUser)
+
+app.post('/login', userLogin)
 
 export const api = functions.https.onRequest(app)
 

@@ -1,9 +1,15 @@
 import { dbConnect } from "./mongoConnect.js";
-import { ObjectId } from "mongodb"
+import { ObjectId } from "mongodb";
 
 export async function addNewUser(req, res) {
   const newUser = req.body;
+
   const db = dbConnect();
+  const collection = await db.collection("program").find().toArray();
+
+  collection.forEach((program) => {
+    newUser[program.day] = program.movements;
+  });
   await db
     .collection("users")
     .insertOne(newUser)
@@ -35,10 +41,32 @@ export async function updateUser(req, res) {
   const { userId } = req.params;
   await db
     .collection("users")
-    .findOneAndUpdate({ _id: new ObjectId(userId)}, { $push: req.body })
+    .findOneAndUpdate({ _id: new ObjectId(userId) }, { $set: req.body })
     .catch((err) => {
       res.status(500).send(err);
-      return
+      return;
     });
-    res.status(202).send({ message: "user updated" })
+  res.status(202).send({ message: "user updated" });
+}
+
+export async function userLogin(req, res) {
+  const db = dbConnect();
+  const { email, password } = req.body;
+
+
+  const matchingUsers = await db
+    .collection("users")
+    .find({ email })
+    .toArray();
+
+  if (!matchingUsers.length) {
+    res.status(401).send({ message: "invalid email or password" });
+    return;
+  }
+  if (password === matchingUsers[0].password) {
+    res.send(matchingUsers);
+  } else {
+    res.status(401).send({ message: "invalid email or password" });
+    return;
+  }
 }
