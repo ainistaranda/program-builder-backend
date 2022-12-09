@@ -26,8 +26,12 @@ app.get('/users', getAllUsers)
 app.post('/users', addNewUser)
 app.get('/users/:userId', getOneUser)
 app.patch('/users/:userId', updateUser)
+app.post('/users/:userId', userLogin)
 
 app.post('/login', userLogin)
+
+// app.patch('/users/:userId', updateWeight)
+
 
 export const api = functions.https.onRequest(app)
 

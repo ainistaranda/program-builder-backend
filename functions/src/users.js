@@ -17,7 +17,15 @@ export async function addNewUser(req, res) {
       res.status(500).send(err);
       return;
     });
-  getAllUsers(req, res);
+  // getAllUsers(req, res);
+  const matchingUsers = await db
+    .collection("users")
+    .find({ email: newUser.email, password: newUser.password })
+    .toArray();
+
+    delete matchingUsers[0].password;
+
+    res.send(matchingUsers[0])
 }
 
 export async function getAllUsers(req, res) {
@@ -39,6 +47,7 @@ export async function getOneUser(req, res) {
 export async function updateUser(req, res) {
   const db = dbConnect();
   const { userId } = req.params;
+
   await db
     .collection("users")
     .findOneAndUpdate({ _id: new ObjectId(userId) }, { $set: req.body })
@@ -53,10 +62,9 @@ export async function userLogin(req, res) {
   const db = dbConnect();
   const { email, password } = req.body;
 
-
   const matchingUsers = await db
     .collection("users")
-    .find({ email })
+    .find({ email, password })
     .toArray();
 
   if (!matchingUsers.length) {
@@ -70,3 +78,17 @@ export async function userLogin(req, res) {
     return;
   }
 }
+
+// export async function updateWeight(req,res) {
+//   const db = dbConnect();
+//   const { userId } = req.params;
+//   await db
+//     .collection("users").doc("weight")
+//     .findOneAndUpdate({ _id: new ObjectId(userId) }, { $set: req.body })
+//     .catch((err) => {
+//       res.status(500).send(err);
+//       return;
+//     });
+//   res.status(202).send({ message: "weight updated" });
+
+// }
