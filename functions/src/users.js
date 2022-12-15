@@ -174,16 +174,3 @@ export async function userLogin(req, res) {
   }
 }
 
-// export async function updateWeight(req,res) {
-//   const db = dbConnect();
-//   const { userId } = req.params;
-//   await db
-//     .collection("users").doc("weight")
-//     .findOneAndUpdate({ _id: new ObjectId(userId) }, { $set: req.body })
-//     .catch((err) => {
-//       res.status(500).send(err);
-//       return;
-//     });
-//   res.status(202).send({ message: "weight updated" });
-
-// }

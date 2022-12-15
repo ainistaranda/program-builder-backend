@@ -1,5 +1,4 @@
 import { MongoClient } from "mongodb"
-// import { uri } from "./credentials.js"
 import 'dotenv/config'
 
 export function dbConnect() {
