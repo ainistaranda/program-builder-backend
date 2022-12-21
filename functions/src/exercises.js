@@ -1,5 +1,5 @@
 import { dbConnect } from "./mongoConnect.js";
-import { ObjectId } from "mongodb";
+
 
 export async function addNewExercise(req, res) {
   const newExercise = req.body;
